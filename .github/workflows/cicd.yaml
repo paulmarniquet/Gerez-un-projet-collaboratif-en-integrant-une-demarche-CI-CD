@@ -13,6 +13,7 @@ jobs:
         with:
           java-version: '11'
       - name: Run tests
+        working-directory: ./back
         run: |
           mvn '-Dtest=!*IntegrationTest' verify -Djacoco.destFile=exportJacoco/jacoco-fast.exec
       - name: Upload jacoco exec results
