@@ -22,7 +22,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Units tests
-        run: mvn -B test --file pom.xml
+        run: mvn -B test --file pom.xml jacoco:report
 
       - name: Upload JaCoCo coverage report as a workflow artifact
         uses: actions/upload-artifact@v3
