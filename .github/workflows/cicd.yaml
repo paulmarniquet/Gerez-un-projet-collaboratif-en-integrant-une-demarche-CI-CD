@@ -7,7 +7,7 @@ on:
     
 jobs:
   backend-unit-tests:
-    name: Unit Tests
+    name: Back-end - Unit Tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -37,7 +37,7 @@ jobs:
 
 
   frontend-unit-tests:
-    name: Unit tests
+    name: Front-end - Unit tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
-      - run: npm test -- --watch=false --browsers=ChromeHeadless
+      - run: npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
 
       - name: Test Report
         uses: phoenix-actions/test-reporting@v8
