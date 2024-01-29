@@ -56,5 +56,5 @@ jobs:
         if: success() || failure()
         with:
           name: Karma Tests
-          path: ./coverage/bobapp/*.xml
+          path: ./front/coverage/bobapp/*.xml
           reporter: jest-junit
