@@ -44,18 +44,13 @@ jobs:
         working-directory: ./front
     steps:
       - uses: actions/checkout@v2
-
-      - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
-
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli
+      - uses: actions/setup-node@v3
 
       - name: Install dependencies
         run: npm ci
 
       - name: Launch Karma tests
-        run: npm run test:prod
+        run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
 
       - uses: actions/upload-artifact@v3
         with:
