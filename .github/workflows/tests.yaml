@@ -1,5 +1,5 @@
-name: Execution Tests
-run-name: Launching unit tests
+name: Units Tests
+run-name: Unit tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     
 jobs:
   backend-unit-tests:
-    name: Back-end - Unit Tests
+    name: Back-end
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -37,13 +37,16 @@ jobs:
 
 
   frontend-unit-tests:
-    name: Front-end - Unit tests
+    name: Front-end
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./front
     steps:
       - uses: actions/checkout@v2
+      - uses: browser-actions/setup-chrome@v1
+          - run: chrome --version
+
       - run: npm ci
       - run: npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
 
