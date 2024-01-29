@@ -45,8 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: browser-actions/setup-chrome@v1
-          - run: chrome --version
-
+      - run: chrome --version
       - run: npm ci
       - run: npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
 
