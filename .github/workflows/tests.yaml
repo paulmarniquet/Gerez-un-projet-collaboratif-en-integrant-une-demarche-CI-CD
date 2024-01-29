@@ -47,7 +47,6 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
       - run: npm ci
-      - run: npm run build
       - run: npm test -- --watch=false --browsers=ChromeHeadless
 
       - name: Test Report
@@ -56,5 +55,5 @@ jobs:
         if: success() || failure()
         with:
           name: Karma Tests
-          path: ./front/coverage/bobapp/*.xml
+          path: ./coverage/bobapp/*.html
           reporter: jest-junit
