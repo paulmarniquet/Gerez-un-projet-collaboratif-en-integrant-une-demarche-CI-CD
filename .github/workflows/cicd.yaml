@@ -4,7 +4,6 @@ run-name: Launching unit tests
 on:
   push:
     branches: [ main ]
-    paths: [ '**.java', '.github/workflows/jacoco.yml', 'pom.xml' ]
     
 jobs:
   unit-tests:
