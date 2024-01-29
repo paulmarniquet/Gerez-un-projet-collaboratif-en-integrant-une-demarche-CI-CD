@@ -17,7 +17,11 @@ jobs:
 
       - name: Build with Maven
         working-directory: ./back
-        run: mvn -B package -Pcoverage
+        run: mvn -B package --file pom.xml
+
+      - name: Units tests
+        working-directory: ./back
+        run: mvn -B test --file pom.xml jacoco:report
       
       - name: Generate JaCoCo badge
         id: jacoco
