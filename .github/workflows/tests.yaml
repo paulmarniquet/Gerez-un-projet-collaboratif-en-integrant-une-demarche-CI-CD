@@ -55,13 +55,9 @@ jobs:
         run: npm ci
 
       - name: Launch Karma tests
-        run: ng test --code-coverage --watch=false --browsers=ChromeHeadless
+        run: npm run test:prod
 
-      - name: Test Report
-        uses: phoenix-actions/test-reporting@v8
-        id: test-report
-        if: success() || failure()
+      - uses: actions/upload-artifact@v3
         with:
-          name: Karma Tests
-          path: ./coverage/bobapp/*.html
-          reporter: jest-junit
+          name: Karma Tests Reports
+          path: front/coverage
