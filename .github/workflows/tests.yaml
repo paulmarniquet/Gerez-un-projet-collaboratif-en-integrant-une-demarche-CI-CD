@@ -54,6 +54,6 @@ jobs:
         id: test-report
         if: success() || failure()
         with:
-          name: JEST Tests
-          path: ./tests/reports/jest-*.xml
+          name: Karma Tests
+          path: ./coverage/bobapp/*.xml
           reporter: jest-junit
