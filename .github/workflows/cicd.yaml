@@ -22,12 +22,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Units tests
-        run: mvn -B test --file pom.xml jacoco:report
-
-      - name: Log coverage percentages to workflow output
-        run: |
-          echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
-          echo "branches = ${{ steps.jacoco.outputs.branches }}"
+        run: mvn -B test --file pom.xml
 
       - name: Upload JaCoCo coverage report as a workflow artifact
         uses: actions/upload-artifact@v3
@@ -39,3 +34,4 @@ jobs:
         run: |
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+                - name: Log coverage percentages to workflow output
