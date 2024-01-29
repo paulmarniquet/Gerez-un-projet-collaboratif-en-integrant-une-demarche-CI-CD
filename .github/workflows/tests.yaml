@@ -21,10 +21,10 @@ jobs:
       - name: Units tests
         run: mvn -B test --file pom.xml jacoco:report
 
-      - name: Upload JaCoCo coverage report as a workflow artifact
+      - name: Upload Jacoco coverage report as an artifact
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report
+          name: Jacoco Tests Reports
           path: back/target/site/jacoco/
 
       - name: Get the Coverage info
