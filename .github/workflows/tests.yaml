@@ -47,7 +47,7 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
       - run: npm ci
-      - run: ng test --code-coverage
+      - run: ng test --code-coverage --watch=false --browsers=ChromeHeadless
 
       - name: Test Report
         uses: phoenix-actions/test-reporting@v8
