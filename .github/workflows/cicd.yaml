@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
-      - run: npm test
+      - run: npm test -- --watch=false --browsers=ChromeHeadless
 
       - name: Test Report
         uses: phoenix-actions/test-reporting@v8
