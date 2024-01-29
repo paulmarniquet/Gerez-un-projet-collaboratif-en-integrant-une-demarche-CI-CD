@@ -54,6 +54,6 @@ jobs:
         id: test-report
         if: success() || failure()
         with:
-          name: Karma Tests
-          path: reports/karma-*.xml
-          reporter: karma-junit
+          name: JEST Tests
+          path: reports/jest-*.xml
+          reporter: jest-junit
