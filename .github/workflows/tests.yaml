@@ -44,10 +44,19 @@ jobs:
         working-directory: ./front
     steps:
       - uses: actions/checkout@v2
-      - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
-      - run: npm ci
-      - run: ng test --code-coverage --watch=false --browsers=ChromeHeadless
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        run: chrome --version
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Launch Karma tests
+        run: ng test --code-coverage --watch=false --browsers=ChromeHeadless
 
       - name: Test Report
         uses: phoenix-actions/test-reporting@v8
