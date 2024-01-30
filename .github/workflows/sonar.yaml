@@ -43,9 +43,6 @@ jobs:
   front-end:
     name: Front-end
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./front
     steps:
       - uses: actions/checkout@master
         with:
