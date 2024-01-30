@@ -1,98 +1,17 @@
-name: Continuous Integration
-
+name: Build and dockerize the app
+run-name: Build and dockerize the app
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  backend-tests:
-    name: Backend Tests
+  backend:
+    name: Back-end
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-
-      - name: Backend Unit Tests
-        run: mvn -B test --file back/pom.xml jacoco:report
+    defaults:
+      run:
         working-directory: ./back
-
-      - name: Upload Jacoco coverage report
-        uses: actions/upload-artifact@v2
-        with:
-          name: Jacoco Tests Reports
-          path: back/target/site/jacoco/
-
-  frontend-tests:
-    name: Frontend Tests
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install Dependencies
-        run: npm install
-        working-directory: ./front
-
-      - name: Run Karma Tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
-        working-directory: ./front
-
-      - name: Upload Karma Tests Reports
-        uses: actions/upload-artifact@v2
-        with:
-          name: Karma Tests Reports
-          path: front/coverage
-
-  sonarcloud:
-    name: SonarCloud Analysis
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: SonarCloud Scan Backend
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: back
-          args: >
-            -Dsonar.organization=paulmarniquet
-            -Dsonar.projectKey=bobapp_backend
-            -Dsonar.sources=.
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: SonarCloud Scan Frontend
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: front
-          args: >
-            -Dsonar.organization=paulmarniquet
-            -Dsonar.projectKey=bobapp_frontend
-            -Dsonar.sources=src/
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  dockerize_back:
-    name: Backend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -100,46 +19,67 @@ jobs:
           java-version: 17
           distribution: 'zulu'
 
-      - name: Build Backend
-        run: mvn -B package -DskipTests
-        working-directory: ./back
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Dockerize Backend
+      - name: Build the back-end
+        run: mvn -B package -DskipTests
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./back
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bobapp-backend:latest
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  dockerize_frontend:
-    name: Frontend
+
+  frontend:
+    name: Front-end
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
-        working-directory: ./front
 
-      - name: Build Frontend
+      - name: Build
         run: npm run build
-        working-directory: ./front
 
-      - name: Dockerize Frontend
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./front
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bobapp-frontend:latest
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
