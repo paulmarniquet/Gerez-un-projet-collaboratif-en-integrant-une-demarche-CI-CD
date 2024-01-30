@@ -4,8 +4,9 @@ on:
     branches:
       - main
 jobs:
-  build:
-    name: Build and analyze
+
+  back-end:
+    name: Back-end
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,3 +36,31 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
+
+
+  front-end:
+    name: Front-end
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache npm packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node
+      - name: Install dependencies
+        run: npm ci
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: npm run sonar
