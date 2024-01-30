@@ -8,7 +8,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloudScan1:
+  back:
     name: SonarCloudScan1
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
         with:
           projectBaseDir: back/
 
-  sonarcloudScan2:
+  front:
     name: SonarCloudScan2
     runs-on: ubuntu-latest
     steps:
