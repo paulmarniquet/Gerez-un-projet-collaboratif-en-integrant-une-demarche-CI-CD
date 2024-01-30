@@ -6,7 +6,7 @@ on:
 
 jobs:
   backend:
-    name: Build and dockerize the back-end
+    name: Back-end
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,11 +46,11 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bobapp-backend:latest
 
   frontend:
-    name: Build and dockerize the front-end
+    name: Front-end
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./front
+        working-directory: front
     steps:
 
       - uses: actions/setup-node@v3
