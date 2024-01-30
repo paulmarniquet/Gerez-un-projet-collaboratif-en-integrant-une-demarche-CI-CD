@@ -5,6 +5,29 @@ on:
     branches: [ main ]
 
 jobs:
+  backend:
+    name: Back-end
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: back
+          args: >
+            -Dsonar.organization=paulmarniquet
+            -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
+            -Dsonar.java.coveragePlugin=jacoco
+            -Dsonar.jacoco.reportPaths=back/target/site/jacoco/jacoco.xml
+            -Dsonar.sources=src/main/java
+            -Dsonar.tests=src/test/java
+            -Dsonar.test.inclusions=**/*Test*/**, **/*Test*/**
+            -Dsonar.java.binaries=**/target/classes
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   front-end:
     name: Front-end
