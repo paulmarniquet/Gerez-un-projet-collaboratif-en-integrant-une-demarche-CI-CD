@@ -47,7 +47,7 @@ jobs:
       - uses: actions/setup-node@v3
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Launch Karma tests
         run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
