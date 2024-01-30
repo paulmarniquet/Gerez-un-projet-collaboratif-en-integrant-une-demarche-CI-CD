@@ -8,6 +8,9 @@ jobs:
   back-end:
     name: Back-end
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,7 +39,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
-
 
   front-end:
     name: Front-end
