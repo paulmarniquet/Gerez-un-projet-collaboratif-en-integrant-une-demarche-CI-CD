@@ -37,7 +37,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -45,15 +44,17 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bobapp-backend:latest
 
+
   frontend:
     name: Front-end
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: front
+        working-directory: ./front
     steps:
 
       - uses: actions/setup-node@v3
+
       - name: Install dependencies
         run: npm ci
 
