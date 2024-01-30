@@ -38,9 +38,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: back
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD -Dsonar.sources=back
 
   front-end:
     name: Front-end
@@ -52,8 +50,6 @@ jobs:
 
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
-        with:
-          projectBaseDir: front
 
       - name: SonarQube Scan
         run: sonar-scanner
@@ -61,3 +57,4 @@ jobs:
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.organization=paulmarniquet
           -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
+            -Dsonar.sources=front
