@@ -38,7 +38,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bobapp-backend
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
 
   front-end:
     name: Front-end
@@ -51,13 +51,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup SonarQube
-        uses: warchant/setup-sonar-scanner@v7
-
-      - name: SonarQube Scan
-        run: sonar-scanner
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.organization=paulmarniquet
-          -Dsonar.projectKey=bobapp-frontend
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: front
+          args: >
+            -Dsonar.organization=paulmarniquet
+            -Dsonar.projectKey=paulmarniquet_Gerez-un-projet-collaboratif-en-integrant-une-demarche-CI-CD
+            -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=src/
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
