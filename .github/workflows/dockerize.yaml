@@ -1,8 +1,11 @@
 name: Build and dockerize the app
 run-name: Build and dockerize the app
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["SonarCloud"]
+    types:
+      - completed
+
 
 jobs:
   backend:
