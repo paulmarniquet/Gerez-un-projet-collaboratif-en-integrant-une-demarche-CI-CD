@@ -1,57 +1,93 @@
 # BobApp
 
-Clone project:
+## Introduction
+BobApp is a web application project aimed at providing users with a collection of jokes. The project involves both front-end and back-end components. The goal is to implement Continuous Integration/Continuous Deployment (CI/CD) pipelines for automated testing, code analysis, and Docker image publishing on Docker Hub. This README.md provides instructions on setting up and running the project, as well as configuring CI/CD pipelines.
 
-> git clone XXXXX
+## CI/CD Pipeline Implementation
 
-## Front-end 
+The goal of the CI/CD pipeline is to automate the testing, code analysis, and Docker image publishing processes. The pipeline consists of the following steps:
 
-Go inside folder the front folder:
+1. **Unit Testing**: Run unit tests for both front-end and back-end components.
+2. **Code Analysis**: Analyze code quality using SonarQube.
+3. **Docker Image Publishing**: Publish Docker images to Docker Hub.
 
-> cd front
+The CI/CD pipeline is triggered on each push to the repository. Configuration files for CI/CD tools like Jenkins, GitLab CI/CD, or GitHub Actions can be found in the respective folders.
 
-Install dependencies:
 
-> npm install
+## Setup Instructions
 
-Launch Front-end:
+### Front-end Setup
 
-> npm run start;
+Navigate to the front-end folder:
 
-### Docker
-
-Build the container:
-
-> docker build -t bobapp-front .  
-
-Start the container:
-
-> docker run -p 8080:8080 --name bobapp-front -d bobapp-front
-
-## Back-end
-
-Go inside folder the back folder:
-
-> cd back
+```
+cd front
+```
 
 Install dependencies:
 
-> mvn clean install
+```
+npm install
+```
 
-Launch Back-end:
+Launch the front-end:
 
->  mvn spring-boot:run
+```
+npm run start
+```
+
+#### Docker Setup
+
+Build the front-end container:
+
+```
+docker build -t bobapp-front .
+```
+
+Start the front-end container:
+
+```
+docker run -p 8080:8080 --name bobapp-front -d bobapp-front
+```
+
+### Back-end Setup
+
+Navigate to the back-end folder:
+
+```
+cd back
+```
+
+Install dependencies:
+
+```
+mvn clean install
+```
+
+Launch the back-end:
+
+```
+mvn spring-boot:run
+```
 
 Launch the tests:
 
-> mvn clean install
+```
+mvn clean install
+```
 
-### Docker
+#### Docker Setup
 
-Build the container:
+Build the back-end container:
 
-> docker build -t bobapp-back .  
+```
+docker build -t bobapp-back .
+```
 
-Start the container:
+Start the back-end container:
 
-> docker run -p 8080:8080 --name bobapp-back -d bobapp-back 
+```
+docker run -p 8080:8080 --name bobapp-back -d bobapp-back
+```
+
+If you have any questions or suggestions, please reach out to [paul.marniquet@gmail.com].
